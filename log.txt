@@ -1,2 +1,0 @@
-9e06d36 Task 1.1
-cf969a6 Initial commit
