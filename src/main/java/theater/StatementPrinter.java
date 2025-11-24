@@ -53,32 +53,41 @@ public class StatementPrinter {
         }
         return result;
     }
-    
+
     /**
      * Returns a formatted statement of the invoice associated with this printer.
      * @return the formatted statement
      * @throws IllegalArgumentException if one of the play getType()s is not known
      */
     public String statement() {
-        int totalAmount = 0;
-        int volumeCredits = 0;
         final StringBuilder result =
                 new StringBuilder("Statement for " + invoice.getCustomer() + System.lineSeparator());
 
-        for (Performance p : invoice.getPerformances()) {
+        final int totalAmount = getTotalAmount(result);
 
-            volumeCredits += getVolumeCredits(p);
-
-            // print line for this order
-            result.append(String.format("  %s: %s (%s seats)%n", getPlay(p).getName(),
-                    usd(this.getAmount(p)), p.getAudience()));
-            totalAmount += this.getAmount(p);
-        }
-        
         result.append(String.format("Amount owed is %s%n",
                 usd(totalAmount)));
-        result.append(String.format("You earned %s credits%n", volumeCredits));
+        result.append(String.format("You earned %s credits%n", getTotalVolumeCredits()));
         return result.toString();
+    }
+
+    private int getTotalAmount(StringBuilder statement) {
+        int result = 0;
+        for (Performance p : invoice.getPerformances()) {
+            // print line for this order
+            statement.append(String.format("  %s: %s (%s seats)%n", getPlay(p).getName(),
+                    usd(this.getAmount(p)), p.getAudience()));
+            result += this.getAmount(p);
+        }
+        return result;
+    }
+
+    private int getTotalVolumeCredits() {
+        int result = 0;
+        for (Performance p : invoice.getPerformances()) {
+            result += getVolumeCredits(p);
+        }
+        return result;
     }
 
     private static String usd(int amount) {
