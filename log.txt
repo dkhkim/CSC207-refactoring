@@ -1,3 +1,5 @@
+ec4076b Task 2.1
+4c8fd29 Task 1.2
 61e0d1d Task 1.1
 0bfbf7e Task 1.1
 9e06d36 Task 1.1
